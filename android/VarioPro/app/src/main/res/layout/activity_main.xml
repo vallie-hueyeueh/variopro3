@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ВЕСЬ экран — в одном ScrollView (пакет 13, блок Е.1): на любом экране и при
+  любом размере шрифта ничего не обрезается, контент прокручивается целиком.
+  Отступы под статус-бар/вырез камеры даёт WindowInsets на id="@+id/main"
+  (см. MainActivity). Размеры в dp/sp. Шрифт моноширинный — ровные столбцы цифр.
+-->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+    <!-- ========== ПАНЕЛЬ ЗАПИСИ ========== -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10dp"
+        android:background="#11000000">
+
+        <!-- кнопки перехода: калибровка и файлы записей -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="6dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnOpenCalibration"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="🧭 Калибровка" />
+
+            <Button
+                android:id="@+id/btnOpenFiles"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="📁 Файлы" />
+        </LinearLayout>
+
+        <!-- строка с кнопками -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnRecord"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="● Запись" />
+
+            <Button
+                android:id="@+id/btnStop"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:enabled="false"
+                android:text="■ Стоп" />
+        </LinearLayout>
+
+        <!-- строка состояния записи -->
+        <TextView
+            android:id="@+id/tvRecStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="monospace"
+            android:textSize="16sp"
+            android:paddingTop="8dp"
+            android:text="Запись не идёт" />
+
+        <!-- ========== BLUETOOTH-СТРИМИНГ (Фаза 3B) ========== -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="10dp"
+            android:text="Bluetooth-стриминг на ПК"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/btnStreamToggle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="📡 Включить стриминг" />
+
+        <TextView
+            android:id="@+id/tvStreamStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="monospace"
+            android:textSize="16sp"
+            android:paddingTop="4dp"
+            android:text="выключено" />
+
+        <!-- Кнопка выбора источника магнитометра УБРАНА (пакет 14, Б.2):
+             в запись и поток ВСЕГДА идут ОБА поля (сырое mx..mz и
+             Android-калиброванное mxa..mza); что использует компас,
+             выбирается на ПК (вкладка «Калибровка»). -->
+
+        <!-- ========== GPS ========== -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="10dp"
+            android:text="GPS"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnGpsEnable"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Включить GPS" />
+
+            <Button
+                android:id="@+id/btnGpsRefresh"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Обновить" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvGpsStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="monospace"
+            android:textSize="16sp"
+            android:paddingTop="4dp"
+            android:text="…" />
+    </LinearLayout>
+
+    <!-- ========== ДАТЧИКИ (продолжение общего скролла) ========== -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="12dp">
+
+            <!-- ЗАГОЛОВОК: характеристики -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Датчики телефона"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:paddingBottom="6dp" />
+
+            <!-- Характеристики датчиков (заполняется один раз при старте) -->
+            <TextView
+                android:id="@+id/tvSensorInfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="monospace"
+                android:textSize="14sp"
+                android:lineSpacingMultiplier="1.05"
+                android:text="" />
+
+            <!-- ЗАГОЛОВОК: живые значения -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Живые значения"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:paddingTop="16dp"
+                android:paddingBottom="6dp" />
+
+            <!-- Живые значения датчиков (обновляются в реальном времени) -->
+            <TextView
+                android:id="@+id/tvLive"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="monospace"
+                android:textSize="22sp"
+                android:lineSpacingMultiplier="1.1"
+                android:text="" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!--
+      Разрешение на высокую частоту датчиков (>200 Гц). Нужно с Android 12.
+      Это "обычное" разрешение: даётся автоматически при установке, без вопросов.
+      Без него акселерометр/гироскоп были бы ограничены 200 Гц.
+    -->
+    <uses-permission android:name="android.permission.HIGH_SAMPLING_RATE_SENSORS" />
+
+    <!-- геолокация для варианта «из GPS» (координаты для ПК-пульта) -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    <!-- Bluetooth SPP-стриминг (Фаза 3B).
+         Android 12+ (API 31): runtime-разрешение BLUETOOTH_CONNECT («устройства поблизости»).
+         Android ≤11: старые BLUETOOTH/BLUETOOTH_ADMIN (даются при установке). -->
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+    <uses-permission android:name="android.permission.BLUETOOTH" android:maxSdkVersion="30" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" android:maxSdkVersion="30" />
+    <!-- foreground-сервис стриминга (жив при погашенном экране) + его тип (Android 14+) -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_CONNECTED_DEVICE" />
+    <!-- видимое уведомление сервиса (Android 13+: runtime-запрос) -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.VarioPro">
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- экран калибровки (открывается из MainActivity, не отдельная иконка) -->
+        <activity
+            android:name=".CalibrationActivity"
+            android:exported="false"
+            android:label="Калибровка" />
+
+        <!-- экран «Файлы»: список записей, удаление, «Поделиться» -->
+        <activity
+            android:name=".FilesActivity"
+            android:exported="false"
+            android:label="Файлы записей" />
+
+        <!-- FileProvider для «Поделиться»: отдаёт файлы записей другим приложениям
+             по content://-ссылке (file:// запрещён с Android 7) -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
+        <!-- foreground-сервис Bluetooth-стриминга (Фаза 3B) -->
+        <service
+            android:name=".StreamingService"
+            android:exported="false"
+            android:foregroundServiceType="connectedDevice" />
+    </application>
+
+</manifest>

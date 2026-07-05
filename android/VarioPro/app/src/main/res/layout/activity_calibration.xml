@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Экран «Калибровка» — прокручиваемый список из трёх блоков и кнопки сохранения:
+    1) ГИРОСКОП       — одна кнопка, 3 секунды неподвижно;
+    2) АКСЕЛЕРОМЕТР   — поле N и кнопка «Снять положение» (минимум 6 разных поз);
+    3) МАГНИТОМЕТР    — «Начать»/«Стоп», вращение во все стороны.
+  Внизу — «Сохранить файл калибровки».
+  id="@+id/main" — к нему привязан отступ под системные панели.
+-->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CalibrationActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="14dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Калибровка датчиков"
+            android:textStyle="bold"
+            android:textSize="22sp"
+            android:paddingBottom="4dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Пройдите три шага по порядку. В конце нажмите «Сохранить». Снятая калибровка сохраняется и подхватывается при следующем входе."
+            android:textSize="14sp"
+            android:paddingBottom="10dp" />
+
+        <!-- ================= ТЕКУЩАЯ КАЛИБРОВКА ================= -->
+        <View android:layout_width="match_parent" android:layout_height="1dp"
+            android:background="#33808080" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="ТЕКУЩАЯ КАЛИБРОВКА"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:paddingTop="10dp" />
+
+        <TextView
+            android:id="@+id/tvCurrentCalib"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="monospace"
+            android:textSize="14sp"
+            android:paddingTop="4dp"
+            android:paddingBottom="6dp"
+            android:text="Загрузка…" />
+
+        <!-- ряд 1: Выбрать другую / Удалить -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnChooseCalib"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Выбрать другую" />
+
+            <Button
+                android:id="@+id/btnDeleteCalib"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Удалить" />
+        </LinearLayout>
+
+        <!-- ряд 2: Снять заново -->
+        <Button
+            android:id="@+id/btnRecapture"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Снять заново (новый цикл)" />
+
+        <View android:layout_width="match_parent" android:layout_height="12dp" />
+
+        <!-- ================= GPS (координаты для ПК) ================= -->
+        <View android:layout_width="match_parent" android:layout_height="1dp"
+            android:background="#33808080" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="GPS (координаты для ПК-пульта)"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:paddingTop="10dp" />
+
+        <TextView
+            android:id="@+id/tvGps"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="monospace"
+            android:textSize="15sp"
+            android:paddingTop="4dp"
+            android:text="GPS: ещё нет данных" />
+
+        <Button
+            android:id="@+id/btnGps"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Запросить GPS" />
+
+        <View android:layout_width="match_parent" android:layout_height="12dp" />
+
+        <!-- ================= 1) ГИРОСКОП ================= -->
+        <View android:layout_width="match_parent" android:layout_height="1dp"
+            android:background="#33808080" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="1. ГИРОСКОП"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:paddingTop="10dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Положите телефон НЕПОДВИЖНО на стол и нажмите кнопку. Замер 3 секунды."
+            android:textSize="14sp"
+            android:paddingBottom="6dp" />
+
+        <Button
+            android:id="@+id/btnGyro"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Калибровать гироскоп" />
+
+        <TextView
+            android:id="@+id/tvGyroStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="monospace"
+            android:textSize="15sp"
+            android:paddingTop="6dp"
+            android:paddingBottom="12dp"
+            android:text="Гироскоп: не откалиброван" />
+
+        <!-- ================= 2) АКСЕЛЕРОМЕТР ================= -->
+        <View android:layout_width="match_parent" android:layout_height="1dp"
+            android:background="#33808080" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="2. АКСЕЛЕРОМЕТР (статичные положения)"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:paddingTop="10dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Ставьте телефон в РАЗНЫЕ положения (на грани, с наклонами), держите неподвижно и снимайте. Минимум 6 разных поз."
+            android:textSize="14sp"
+            android:paddingBottom="6dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Число положений N:"
+                android:textSize="15sp" />
+
+            <EditText
+                android:id="@+id/etN"
+                android:layout_width="64dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:inputType="number"
+                android:text="6"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <!-- живые значения акселерометра (видны ВСЕГДА, в т.ч. после набора N) -->
+        <TextView
+            android:id="@+id/tvAccelLive"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="monospace"
+            android:textSize="16sp"
+            android:paddingTop="2dp"
+            android:paddingBottom="2dp"
+            android:text="ax=…  ay=…  az=…" />
+
+        <Button
+            android:id="@+id/btnAccelCapture"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Снять положение" />
+
+        <TextView
+            android:id="@+id/tvAccelCount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="monospace"
+            android:textSize="16sp"
+            android:paddingTop="6dp"
+            android:text="Снято 0 из 6" />
+
+        <TextView
+            android:id="@+id/tvAccelStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:paddingTop="2dp"
+            android:text="" />
+
+        <Button
+            android:id="@+id/btnAccelContinue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:visibility="gone"
+            android:text="Продолжить (положения всё равно принять)" />
+
+        <View android:layout_width="match_parent" android:layout_height="12dp" />
+
+        <!-- ================= 3) МАГНИТОМЕТР ================= -->
+        <View android:layout_width="match_parent" android:layout_height="1dp"
+            android:background="#33808080" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="3. МАГНИТОМЕТР (вращение)"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:paddingTop="10dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Вдали от металла и техники. Нажмите «Начать» и ПЛАВНО вращайте телефон во все стороны (рисуйте им восьмёрки и повороты). Затем «Стоп»."
+            android:textSize="14sp"
+            android:paddingBottom="6dp" />
+
+        <!-- живой модуль поля |B|: сырое (uncalib) и Android-калиброванное -->
+        <TextView
+            android:id="@+id/tvMagB"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:text="|B| = —  мкТл" />
+
+        <!-- индикатор стабильности (разброс |B| за ~3 с) -->
+        <TextView
+            android:id="@+id/tvMagStab"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:paddingBottom="6dp"
+            android:text="разброс: —" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnMagStart"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="▶ Начать" />
+
+            <Button
+                android:id="@+id/btnMagStop"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:enabled="false"
+                android:text="■ Стоп" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvMagStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="monospace"
+            android:textSize="16sp"
+            android:paddingTop="6dp"
+            android:paddingBottom="12dp"
+            android:text="Магнитометр: 0 точек" />
+
+        <!-- ================= СОХРАНЕНИЕ ================= -->
+        <View android:layout_width="match_parent" android:layout_height="1dp"
+            android:background="#33808080" />
+
+        <Button
+            android:id="@+id/btnSave"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="💾 Сохранить файл калибровки" />
+
+        <TextView
+            android:id="@+id/tvSaveStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="monospace"
+            android:textSize="14sp"
+            android:paddingTop="6dp"
+            android:text="Файл ещё не сохранён" />
+
+    </LinearLayout>
+
+</ScrollView>

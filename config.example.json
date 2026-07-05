@@ -1,0 +1,89 @@
+{
+  "_comment": "ПРИМЕР конфига пульта VarioPro3. Скопируйте в config.json рядом и настройте под себя; рабочий config.json создаётся/дополняется пультом автоматически и в репозиторий не попадает. Координаты места и калибровка прибора живут НЕ здесь, а в pc/calibration.json (см. pc/calibration.example.json).",
+  "mode": "auto",
+  "manual": {
+    "R": 0.0225,
+    "sigma_accel": 0.3,
+    "calib_time": 5.0
+  },
+  "view": {
+    "alt": {
+      "window_sec": null,
+      "grid_step": 10.0,
+      "y_mode": "auto",
+      "y_min": 0.0,
+      "y_max": 300.0
+    },
+    "vario": {
+      "window_sec": null,
+      "grid_step": 10.0,
+      "y_mode": "auto",
+      "y_min": -3.0,
+      "y_max": 3.0
+    }
+  },
+  "theme": "dark",
+  "smooth_sec": 0.0,
+  "motion": {
+    "gyro_rest": 0.15,
+    "acc_rest": 0.3,
+    "hold_sec": 0.3,
+    "gyro_dyn": 0.5,
+    "acc_dyn": 0.8,
+    "k_dyn": 5.0,
+    "trans_sec": 0.3
+  },
+  "mekf": {
+    "sigma_g": 7e-05,
+    "sigma_bg": 0.0001,
+    "sigma_u": 0.01,
+    "k_R": 25.0,
+    "acc_gate_ms2": 0.8,
+    "chi2_gate": 11.345,
+    "yaw_sigma_max_deg": 30.0,
+    "init_rest_sec": 1.5
+  },
+  "show_smooth": false,
+  "vertical_accel_mode": "mekf",
+  "show_second": false,
+  "sound": {
+    "enabled": false,
+    "volume": 0.6,
+    "profile": "default_xctracer.txt",
+    "climb_on": null,
+    "sink_on": null,
+    "waveform": "square"
+  },
+  "show_rts": false,
+  "compass_use": "ransac@android",
+  "manual_slots": {
+    "s1": {
+      "R": 0.0225,
+      "sigma_accel": 0.3,
+      "show": false
+    },
+    "s2": {
+      "R": 0.0225,
+      "sigma_accel": 0.3,
+      "show": false
+    }
+  },
+  "sound_source": "vario",
+  "zupt": {
+    "enabled": true,
+    "gyro_max": 0.05,
+    "acc_max": 0.15,
+    "hold_sec": 0.3,
+    "sigma_v": 0.02
+  },
+  "osc": {
+    "enabled": true,
+    "gz_std": 0.8,
+    "mean_ratio": 0.5,
+    "win_sec": 1.0,
+    "hold_sec": 2.0,
+    "k_baro": 8.0
+  },
+  "huber_k": 2.0,
+  "panel_layout": null
+}

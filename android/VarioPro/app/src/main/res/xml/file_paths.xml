@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Пути для FileProvider (кнопка «Поделиться» на экране «Файлы»).
+  Записи лежат в getExternalFilesDir(null) (external-files-path) с запасным
+  вариантом filesDir (files-path) — отдаём обе корневые папки приложения.
+-->
+<paths>
+    <external-files-path name="records" path="." />
+    <files-path name="records_internal" path="." />
+</paths>
